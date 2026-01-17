@@ -1,0 +1,446 @@
+/* navbar-fixed-top перекрывает контент */
+body {
+    padding-top: 70px;
+}
+/* подстрой, если изменишь высоту меню */
+
+/* Общий вид */
+.bober-nav {
+    background: linear-gradient(180deg, #404449 0%, #1e2c35 100%);
+    border-color: rgba(255,255,255,.10);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+/* Бренд */
+.bober-brand {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .bober-brand > img {
+        height: 100%;
+        width: auto;
+        max-height: 28px;
+    }
+
+.bober-title {
+    opacity: .9;
+}
+
+.bober-badge {
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: .8px;
+    color: #bffcf6;
+    border: 1px solid rgba(45,212,191,.25);
+    background: rgba(45,212,191,.10);
+}
+
+/* Пункты меню + “подчёркивание” активного */
+.bober-menu > li > a {
+    color: rgba(255,255,255,.78) !important;
+    position: relative;
+}
+
+    .bober-menu > li > a:hover {
+        color: #2dd4bf !important;
+    }
+
+.bober-menu > .active > a,
+.bober-menu > .active > a:hover {
+    background: transparent !important;
+    color: #eafffd !important;
+}
+
+    .bober-menu > .active > a:after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 8px;
+        height: 2px;
+        background: #2dd4bf;
+        border-radius: 2px;
+        opacity: .9;
+    }
+
+/* Поиск */
+.bober-search {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #fff;
+}
+
+    .bober-search:focus {
+        border-color: rgba(45,212,191,.45);
+        box-shadow: 0 0 0 3px rgba(45,212,191,.10);
+    }
+
+/* Логин справа (чуть выравниваем по высоте) */
+.bober-auth {
+    padding: 8px 0;
+}
+
+
+.img_res{
+    height:64px;
+    width:64px;
+}
+
+.bober-hero {
+    background: linear-gradient(180deg, rgba(11,15,20,.92), rgba(11,15,20,.72));
+    color: #e9eef5;
+    border-radius: 10px;
+}
+
+.bober-h1 {
+    margin-top: 0;
+}
+
+.bober-meta {
+    opacity: .75;
+    margin-top: 10px;
+}
+
+.bober-hero-card {
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    padding: 14px;
+    background: rgba(255,255,255,.06);
+}
+
+.bober-logo-wrap {
+    text-align: center;
+    padding: 8px;
+}
+
+.bober-hero-logo {
+    max-width: 64px;
+    height: auto;
+}
+
+.bober-mini-title {
+    font-size: 16px;
+    opacity: .95;
+}
+
+.bober-panel .panel-heading {
+    background: rgba(0,0,0,.15);
+}
+
+.bober-list {
+    padding-left: 18px;
+    margin-bottom: 0;
+}
+
+.bober-steps {
+    padding-left: 18px;
+}
+
+.bober-well {
+    background: rgba(0,0,0,.04);
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+.bober-hero {
+    background: linear-gradient(180deg, rgba(11,15,20,.92), rgba(11,15,20,.72));
+    color: #e9eef5;
+    border-radius: 10px;
+}
+
+.bober-panel .panel-heading {
+    background: rgba(0,0,0,.12);
+}
+
+.bober-well {
+    background: rgba(0,0,0,.04);
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+.bober-list {
+    padding-left: 18px;
+    margin-bottom: 0;
+}
+
+.bober-kv {
+    margin-bottom: 6px;
+}
+.bober-links .bober-thumb {
+    border-radius: 12px;
+    overflow: hidden;
+    border-color: rgba(0,0,0,.08);
+    text-decoration: none;
+}
+
+.bober-thumb-img {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.02);
+}
+
+    .bober-thumb-img img {
+        max-height: 72px;
+        width: auto;
+    }
+
+.bober-links .thumbnail:hover {
+    box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    transform: translateY(-2px);
+    transition: all .12s ease;
+}
+.bober-post {
+    border-radius: 12px;
+    overflow: hidden;
+    border-color: rgba(0,0,0,.08);
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+    .bober-post:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(0,0,0,.10);
+    }
+
+    .bober-post .panel-heading {
+        background: rgba(0,0,0,.02);
+    }
+
+.bober-post-title {
+    text-decoration: none;
+}
+
+.bober-post-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(0,0,0,.55);
+}
+
+.bober-post-excerpt {
+    color: rgba(0,0,0,.75);
+    margin-bottom: 12px;
+}
+/* форма */
+.bober-comment-form {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.bober-form textarea {
+    min-height: 140px;
+}
+
+/* карточка комментария */
+.bober-comment {
+    border-radius: 12px;
+    overflow: hidden;
+    border-color: rgba(0,0,0,.08);
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+}
+
+.bober-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #eafffd;
+    background: rgba(45,212,191,.18);
+    border: 1px solid rgba(45,212,191,.25);
+}
+
+.bober-comment-head {
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+.bober-dot {
+    margin: 0 6px;
+    color: rgba(0,0,0,.35);
+}
+
+.bober-comment-text {
+    color: rgba(0,0,0,.78);
+}
+
+.bober-cover {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.08);
+    box-shadow: 0 14px 30px rgba(0,0,0,.12);
+    margin-bottom: 18px;
+}
+
+.bober-cover-img {
+    width: 100%;
+    height: 360px; /* “обложка” фиксированной высоты */
+    object-fit: none; /* не тянем, а красиво обрезаем */
+    object-position: center;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .bober-cover-img {
+        height: 220px;
+    }
+}
+
+.bober-cover {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.08);
+    box-shadow: 0 14px 30px rgba(0,0,0,.12);
+    margin-bottom: 18px;
+    background: rgba(0,0,0,.03); /* фон “полей” */
+}
+
+.bober-cover-img-contain {
+    width: 100%;
+    height: 360px; /* максимальная высота блока */
+    object-fit: none; /* НЕ режем, а вписываем */
+    object-position: center;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .bober-cover-img-contain {
+        height: 220px;
+    }
+}
+
+
+.bober-form {
+    max-width: 720px;
+}
+
+.bober-form-group label {
+    font-weight: 600;
+}
+
+.bober-textarea {
+    resize: vertical;
+    border-radius: 10px;
+    border-color: rgba(0,0,0,.14);
+}
+
+    .bober-textarea:focus {
+        border-color: rgba(45,212,191,.55);
+        box-shadow: 0 0 0 3px rgba(45,212,191,.12);
+    }
+
+.bober-form-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.bober-post {
+    border-radius: 12px;
+    overflow: hidden;
+    border-color: rgba(0,0,0,.08);
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+}
+
+.bober-post-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(0,0,0,.55);
+}
+
+.bober-mini-cover {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(0,0,0,.03);
+}
+
+.bober-mini-cover-img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+/* общая панель */
+.navbar {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 22px;
+}
+
+.navbar-inverse {
+    background: linear-gradient(180deg, #1f2a33 0%, #101820 100%);
+    box-shadow: 0 10px 22px rgba(0,0,0,.20);
+}
+
+/* логотип/бренд */
+.navbar-brand {
+    padding: 6px 12px;
+    height: 54px; /* высота меню */
+    line-height: 42px;
+    font-weight: 700;
+    letter-spacing: .2px;
+}
+
+    .navbar-brand > img {
+        height: 42px;
+        width: auto;
+        max-height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+/* пункты */
+.navbar-inverse .navbar-nav > li > a {
+    color: rgba(255,255,255,.82);
+    padding-top: 16px;
+    padding-bottom: 16px;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+    .navbar-inverse .navbar-nav > li > a:hover {
+        color: #ffffff;
+        background: rgba(45,212,191,.10);
+    }
+
+/* активный пункт */
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    background: rgba(45,212,191,.18);
+    color: #ffffff;
+}
+
+    /* “подчёркивание” активного */
+    .navbar-inverse .navbar-nav > .active > a:after {
+        content: "";
+        display: block;
+        height: 2px;
+        background: rgba(45,212,191,.85);
+        margin-top: 10px;
+        border-radius: 2px;
+    }
+
+/* правый блок (привет/вход) */
+.navbar-inverse .navbar-text,
+.navbar-inverse .navbar-nav.navbar-right > li > a {
+    color: rgba(255,255,255,.75);
+}
+
+/* dropdown */
+.navbar-inverse .dropdown-menu {
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.10);
+    box-shadow: 0 14px 30px rgba(0,0,0,.18);
+}
+
+    .navbar-inverse .dropdown-menu > li > a {
+        padding: 10px 16px;
+    }

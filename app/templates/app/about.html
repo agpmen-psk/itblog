@@ -1,0 +1,107 @@
+﻿{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="jumbotron bober-hero">
+    <div class="row">
+        <div class="col-sm-8">
+            <h1 class="bober-h1">О нас</h1>
+            <p class="lead">
+                “БОБР” — это ИТ‑блог про инфраструктуру: сети, VoIP, Linux и безопасность.
+                Пишем так, чтобы можно было повторить руками — с командами, схемами и разбором ошибок.
+            </p>
+
+            <p class="bober-meta">
+                Сегодня: {% now "d.m.Y H:i" %}
+            </p>
+
+            <p>
+                <a class="btn btn-primary btn-lg" href="{% url 'home' %}">Читать статьи</a>
+                <a class="btn btn-default btn-lg" href="{% url 'contact' %}">Задать вопрос</a>
+            </p>
+        </div>
+
+        <div class="col-sm-4 hidden-xs">
+            <div class="bober-hero-card">
+                <div class="bober-logo-wrap">
+                    <img src="{% static 'app/content/beaver.png' %}" alt="БОБР" class="bober-hero-logo">
+                </div>
+                <div class="bober-hero-card-text">
+                    <div class="bober-mini-title">ИТ‑Блог “БОБР”</div>
+                    <div class="text-muted">Практика. Без воды. С логами.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default bober-panel">
+            <div class="panel-heading"><strong>Миссия</strong></div>
+            <div class="panel-body">
+                Делать инфраструктуру понятнее: объяснять сложные вещи простыми шагами, показывать типовые грабли и способы не наступать на них второй раз.
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default bober-panel">
+            <div class="panel-heading"><strong>О чём пишем</strong></div>
+            <div class="panel-body">
+                <ul class="bober-list">
+                    <li>Сети: VLAN, маршрутизация, диагностика.</li>
+                    <li>VoIP: SIP/RTP, PBX, качество голоса.</li>
+                    <li>Linux/Windows: сервисы, автоматизация, бэкапы.</li>
+                    <li>Безопасность: VPN, сегментация, базовое hardening.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default bober-panel">
+            <div class="panel-heading"><strong>Принципы</strong></div>
+            <div class="panel-body">
+                <ul class="bober-list">
+                    <li>Пишем только то, что проверяли вживую.</li>
+                    <li>Всегда даём “план отката” и точки контроля.</li>
+                    <li>Любим метрики: latency, loss, jitter, RPS — что уместно.</li>
+                    <li>Ценим читабельные конфиги и документацию.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-7">
+        <h2 class="bober-h2">Как выглядит типичный разбор</h2>
+        <ol class="bober-steps">
+            <li><strong>Симптом</strong>: что видит пользователь/мониторинг.</li>
+            <li><strong>Гипотезы</strong>: 3–5 вероятных причин.</li>
+            <li><strong>Проверки</strong>: команды/логи/трейсы, что именно смотреть.</li>
+            <li><strong>Фикс</strong>: минимально достаточное изменение.</li>
+            <li><strong>Профилактика</strong>: алерты, лимиты, документация.</li>
+        </ol>
+    </div>
+
+    <div class="col-md-5">
+        <div class="well bober-well">
+            <h3 class="bober-h3">Хочешь тему статьи?</h3>
+            <p class="text-muted">
+                Присылай вводные: “что было / что стало / что болит / какие ограничения”.
+                Из этого получится нормальный инженерный пост.
+            </p>
+            <p class="margin-top">
+                <a class="btn btn-success" href="{% url 'contact' %}">Написать</a>
+                <a class="btn btn-default" href="{% url 'links' %}">Полезные ресурсы</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<h2>{{ post_1.title }}</h2>
+{% if post_1.image and post_1.image.url != '/media/temp.jpg' %}
+<div class="bober-cover panel panel-default">
+    <img class="img-responsive bober-cover-img"
+         src="{{ post_1.image.url }}"
+         alt="{{ post_1.title }}">
+</div>
+{% endif %}
+
+
+<p>{{ post_1.content|linebreaksbr }}</p> {# вывод текста по абзацам #}
+
+{# --- форма комментария --- #}
+<div class="panel panel-default bober-comment-form">
+    <div class="panel-heading">
+        <strong>Комментарии</strong>
+    </div>
+    <div class="panel-body">
+
+        {% if user.is_authenticated %}
+        <h4 class="bober-h4">Добавить комментарий</h4>
+
+        <form method="POST" class="bober-form">
+            {% csrf_token %}
+
+            <div class="form-group bober-form-group">
+                {{ form.text.label_tag }}
+                {{ form.text }}
+                <p class="help-block text-muted">
+                    Бобёр любит факты: логи, шаги воспроизведения и “что менялось последним”.
+                </p>
+                {{ form.text.errors }}
+            </div>
+
+            <div class="bober-form-actions">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="alert alert-info">
+            Для добавления комментария, пожалуйста, авторизуйтесь.
+        </div>
+        {% endif %}
+
+
+    </div>
+</div>
+
+{# --- список комментариев --- #}
+{% for comment in comments %}
+<div class="panel panel-default bober-comment">
+    <div class="panel-body">
+        <div class="media">
+            <div class="media-left">
+                <div class="bober-avatar" title="{{ comment.author|default:'user' }}">
+                    {{ comment.author|default:"?"|slice:":1"|upper }}
+                </div>
+            </div>
+
+            <div class="media-body">
+                <div class="bober-comment-head">
+                    <strong class="bober-comment-author">{{ comment.author }}</strong>
+                    <span class="bober-dot">•</span>
+                    <span class="text-muted small">{{ comment.date|date:"d.m.Y H:i" }}</span>
+                </div>
+
+                <div class="bober-comment-text">
+                    {{ comment.text|linebreaksbr }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="alert alert-warning">
+    Комментариев пока нет. В плотине тихо.
+</div>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,76 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<div class="jumbotron bober-hero">
+    <h1 class="bober-h1">ИТ‑Блог «БОБР»</h1>
+    <p class="lead">Короткие заметки про Django, сети и всё, что помогает жить инфраструктуре.</p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="{% url 'blog' %}">Перейти в блог</a>
+        {% if user.is_superuser %}
+        <a class="btn btn-default btn-lg" href="{% url 'newpost' %}">Новый пост</a>
+        {% endif %}
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="page-header">
+            <h2>Последние записи</h2>
+        </div>
+
+        {% for post in latest_posts %}
+        <div class="panel panel-default bober-post">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a href="{% url 'blogpost' parametr=post.id %}">{{ post.title }}</a>
+                </h3>
+                <div class="bober-post-meta">{{ post.posted|date:"d.m.Y H:i" }}</div>
+            </div>
+            <div class="panel-body">
+                {% if post.image and post.image.url != '/media/temp.jpg' %}
+                <div class="bober-mini-cover">
+                    <img class="img-responsive bober-mini-cover-img"
+                         src="{{ post.image.url }}"
+                         alt="{{ post.title }}">
+                </div>
+                {% endif %}
+                <p>{{ post.description|truncatechars:220 }}</p>
+                <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">Читать</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">Пока нет постов — бобёр готовит веточки.</div>
+        {% endfor %}
+
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>О проекте</strong></div>
+            <div class="panel-body">
+                Блог для лабораторных и практики: посты + картинки + комментарии.
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Разделы</strong></div>
+            <div class="panel-body">
+                <ul class="list-unstyled" style="margin-bottom:0;">
+                    <li>— Django</li>
+                    <li>— Базы данных</li>
+                    <li>— Сети</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Контакты</strong></div>
+            <div class="panel-body">
+                Страница контактов: <a href="{% url 'contact' %}">открыть</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

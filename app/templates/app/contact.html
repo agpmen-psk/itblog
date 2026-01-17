@@ -1,0 +1,94 @@
+﻿{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="jumbotron bober-hero">
+    <h1 class="bober-h1">Контакты</h1>
+    <p class="lead">
+        Если у тебя “всё упало” — спокойно. БОБР уже точит зубы о проблему и готов строить плотину из логов.
+    </p>
+    <p class="text-muted small">
+        Подсказка: чем больше фактов (время, что меняли, симптомы), тем меньше шаманства.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <h2 class="bober-h2">Написать в штаб БОБРа</h2>
+
+        <div class="panel panel-default bober-panel">
+            <div class="panel-heading"><strong>Форма обращения</strong></div>
+            <div class="panel-body">
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_name">Имя</label>
+                        <input id="id_name" name="name" type="text" class="form-control" placeholder="Как к тебе обращаться">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email">Email</label>
+                        <input id="id_email" name="email" type="email" class="form-control" placeholder="куда отвечать (желательно не /dev/null)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_topic">Тема</label>
+                        <select id="id_topic" name="topic" class="form-control">
+                            <option>Вопрос по статье</option>
+                            <option>Идея темы</option>
+                            <option>Нашёл ошибку (БОБР извинится)</option>
+                            <option>Помогите, горит прод</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_msg">Сообщение</label>
+                        <textarea id="id_msg" name="message" rows="7" class="form-control"
+                                  placeholder="Что произошло, когда, что делал, что ожидал увидеть. Логи приветствуются."></textarea>
+                        <p class="help-block">
+                            Мини-чеклист: время инцидента, окружение, шаги воспроизведения, вывод ping/traceroute, что менялось последним.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Отправить бобру</button>
+                    <a class="btn btn-default" href="{% url 'home' %}">Вернуться к статьям</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <h2 class="bober-h2">Быстрые каналы</h2>
+
+        <div class="well bober-well">
+            <p class="bober-kv"><strong>Email:</strong> support@bober.local</p>
+            <p class="bober-kv"><strong>Идеи тем:</strong> ideas@bober.local</p>
+            <p class="bober-kv"><strong>“Горит прод”:</strong> noc@bober.local</p>
+            <hr>
+            <p class="text-muted">
+                SLA по‑бобровски:
+                <br>— “Горит прод”: отвечаем быстро, если приложены логи.
+                <br>— “Просто спросить”: тоже отвечаем, но бобёр сначала допьёт чай и дочитает RFC.
+            </p>
+        </div>
+
+        <div class="panel panel-default bober-panel">
+            <div class="panel-heading"><strong>Что приложить</strong></div>
+            <div class="panel-body">
+                <ul class="bober-list">
+                    <li>Скрин/текст ошибки (не “оно не работает”).</li>
+                    <li>Время и часовой пояс.</li>
+                    <li>Что менялось последним (да, “ничего” тоже считается изменением).</li>
+                    <li>Пара строк из логов (без паролей и токенов).</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

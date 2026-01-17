@@ -1,0 +1,37 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<div class="jumbotron bober-hero">
+    <h1 class="bober-h1">{{ title }}</h1>
+    <p class="lead">Посты из бобровой плотины: коротко, по делу и с логами.</p>
+</div>
+
+{% for post in posts %}
+<div class="panel panel-default bober-post">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a class="bober-post-title" href="{% url 'blogpost' parametr=post.id %}">
+                {{ post.title }}
+            </a>
+        </h3>
+        <div class="bober-post-meta">
+            {{ post.posted|date:"d.m.Y H:i" }}
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <p class="bober-post-excerpt">
+            {{ post.description|truncatechars:220 }}
+        </p>
+        <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">
+            Читать дальше
+        </a>
+    </div>
+</div>
+{% empty %}
+<div class="alert alert-info">
+    Пока постов нет. Бобёр собирает веточки.
+</div>
+{% endfor %}
+
+{% endblock %}
