@@ -6,32 +6,32 @@
     <p class="lead">Посты из бобровой плотины: коротко, по делу и с логами.</p>
 </div>
 
-{% for post in posts %}
+
+
+        {% for post in posts %}
 <div class="panel panel-default bober-post">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a class="bober-post-title" href="{% url 'blogpost' parametr=post.id %}">
-                {{ post.title }}
-            </a>
+            <a href="{% url 'blogpost' parametr=post.id %}">{{ post.title }}</a>
         </h3>
-        <div class="bober-post-meta">
-            {{ post.posted|date:"d.m.Y H:i" }}
-        </div>
+        <div class="bober-post-meta">{{ post.posted|date:"d.m.Y H:i" }}</div>
     </div>
-
     <div class="panel-body">
-        <p class="bober-post-excerpt">
-            {{ post.description|truncatechars:220 }}
-        </p>
-        <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">
-            Читать дальше
-        </a>
+        {% if post.image and post.image.url != '/media/temp.jpg' %}
+        <div class="bober-mini-cover">
+            <img class="img-responsive bober-mini-cover-img"
+                 src="{{ post.image.url }}"
+                 alt="{{ post.title }}">
+        </div>
+        {% endif %}
+        <p>{{ post.description|truncatechars:220 }}</p>
+        <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">Читать</a>
     </div>
 </div>
-{% empty %}
-<div class="alert alert-info">
-    Пока постов нет. Бобёр собирает веточки.
-</div>
-{% endfor %}
+        {% empty %}
+<div class="alert alert-info">Пока нет постов — бобёр готовит веточки.</div>
+        {% endfor %}
+
+
 
 {% endblock %}
