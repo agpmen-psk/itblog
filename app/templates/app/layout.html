@@ -13,6 +13,22 @@
 </head>
 
 <body>
+    <div id="page-loader" class="bober-loader" aria-hidden="true">
+        <div class="bober-loader-card">
+            <div class="bober-dam" aria-hidden="true">
+                <div class="bober-dam-logs"></div>
+                <div class="bober-dam-water"></div>
+                <div class="bober-dam-beaver">🦫</div>
+            </div>
+
+            <div class="bober-loader-title">Строим плотину…</div>
+            <div class="bober-loader-sub">Подготавливаем страницу</div>
+
+            <div class="bober-loader-bar" aria-hidden="true"></div>
+        </div>
+    </div>
+    </div>
+
     <nav class="navbar navbar-inverse navbar-fixed-top bober-nav" role="navigation">
         <div class="container">
 
@@ -86,6 +102,64 @@
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>
     {% block scripts %}{% endblock %}
+    <script>
+        (function () {
+            var LOADER_ID = 'page-loader';
+            var MIN_SHOW_MS = 400;     // сколько минимум показывать после полной загрузки
+            var CLICK_DELAY_MS = 120;  // маленькая задержка, чтобы лоадер успел отрисоваться перед переходом
+
+            function el() { return document.getElementById(LOADER_ID); }
+
+            function showLoader() {
+                var x = el();
+                if (!x) return;
+                x.style.display = 'flex';
+                x.classList.remove('is-hidden');
+            }
+
+            function hideLoader() {
+                var x = el();
+                if (!x) return;
+                x.classList.add('is-hidden');
+                window.setTimeout(function () { x.style.display = 'none'; }, 300);
+            }
+
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest ? e.target.closest('a') : null;
+                if (!a) return;
+
+ 
+                var href = a.getAttribute('href') || '';
+                if (!href || href[0] === '#') return;
+                if (a.getAttribute('target') === '_blank') return;
+                if (a.classList.contains('dropdown-toggle')) return;
+                if (a.hasAttribute('download')) return;
+
+   
+                showLoader();
+
+
+                e.preventDefault();
+                window.setTimeout(function () {
+                    window.location.href = a.href;
+                }, CLICK_DELAY_MS);
+            }, true);
+
+  
+            window.addEventListener('load', function () {
+                showLoader(); 
+                window.setTimeout(hideLoader, MIN_SHOW_MS);
+            }, { once: true });
+
+           
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    hideLoader();
+                }
+            });
+        })();
+    </script>
+
 
 </body>
 </html>

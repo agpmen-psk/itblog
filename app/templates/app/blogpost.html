@@ -1,25 +1,68 @@
 ﻿{% extends "app/layout.html" %}
 {% block content %}
 
-<h2>{{ post_1.title }}</h2>
-{% if post_1.image and post_1.image.url != '/media/temp.jpg' %}
-<div class="bober-cover panel panel-default">
-    <img class="img-responsive bober-cover-img"
-         src="{{ post_1.image.url }}"
-         alt="{{ post_1.title }}">
+{# ---------- Статья ---------- #}
+<div class="bober-article">
+
+    <header class="bober-article-header">
+        <h1 class="bober-article-title">{{ post_1.title }}</h1>
+
+        {% if post_1.posted %}
+        <div class="bober-article-meta text-muted small">
+            {{ post_1.posted|date:"d.m.Y H:i" }}
+        </div>
+        {% endif %}
+    </header>
+
+    {% if post_1.image and post_1.image.url != '/media/temp.jpg' %}
+    <div class="bober-cover panel panel-default">
+        <img class="img-responsive bober-cover-img"
+             src="{{ post_1.image.url }}"
+             alt="{{ post_1.title }}">
+    </div>
+    {% endif %}
+
+    {# если есть краткое описание — показываем как лид #}
+    {% if post_1.description %}
+    <p class="lead bober-article-lead">
+        {{ post_1.description }}
+    </p>
+    {% endif %}
+
+    <div class="bober-article-body">
+        {{ post_1.content|linebreaks }}
+    </div>
+
+    <hr class="bober-article-sep" />
+
+</div>
+{% if related_posts %}
+<div class="panel panel-default bober-related">
+    <div class="panel-heading">
+        <strong>Похожие посты</strong>
+        <span class="text-muted small">по словам в заголовке</span>
+    </div>
+
+    <div class="list-group">
+        {% for p in related_posts %}
+        <a class="list-group-item bober-related-item" href="{% url 'blogpost' parametr=p.id %}">
+            <div class="bober-related-title">{{ p.title }}</div>
+            {% if p.description %}
+            <div class="bober-related-desc small text-muted">{{ p.description|truncatechars:120 }}</div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}
 
-
-<p>{{ post_1.content|linebreaksbr }}</p> {# вывод текста по абзацам #}
-
-{# --- форма комментария --- #}
+{# ---------- Комментарии ---------- #}
 <div class="panel panel-default bober-comment-form">
     <div class="panel-heading">
         <strong>Комментарии</strong>
     </div>
-    <div class="panel-body">
 
+    <div class="panel-body">
         {% if user.is_authenticated %}
         <h4 class="bober-h4">Добавить комментарий</h4>
 
@@ -29,9 +72,11 @@
             <div class="form-group bober-form-group">
                 {{ form.text.label_tag }}
                 {{ form.text }}
+
                 <p class="help-block text-muted">
                     Бобёр любит факты: логи, шаги воспроизведения и “что менялось последним”.
                 </p>
+
                 {{ form.text.errors }}
             </div>
 
@@ -40,16 +85,13 @@
             </div>
         </form>
         {% else %}
-        <div class="alert alert-info">
+        <div class="alert alert-info" style="margin-bottom:0;">
             Для добавления комментария, пожалуйста, авторизуйтесь.
         </div>
         {% endif %}
-
-
     </div>
 </div>
 
-{# --- список комментариев --- #}
 {% for comment in comments %}
 <div class="panel panel-default bober-comment">
     <div class="panel-body">
@@ -68,7 +110,7 @@
                 </div>
 
                 <div class="bober-comment-text">
-                    {{ comment.text|linebreaksbr }}
+                    {{ comment.text|linebreaks }}
                 </div>
             </div>
         </div>
