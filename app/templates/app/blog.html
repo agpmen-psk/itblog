@@ -1,37 +1,35 @@
 ﻿{% extends "app/layout.html" %}
+
 {% block content %}
+<h2>Новости</h2>
 
-<div class="jumbotron bober-hero">
-    <h1 class="bober-h1">{{ title }}</h1>
-    <p class="lead">Посты из бобровой плотины: коротко, по делу и с логами.</p>
+{% if user.is_staff %}
+<p>
+    <a href="{% url 'newpost' %}">Добавить новость</a>
+</p>
+{% endif %}
+
+{% if posts %}
+    {% for post in posts %}
+<div style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+    <h3>
+        <a href="{% url 'blogpost' post.id %}">{{ post.title }}</a>
+    </h3>
+
+    <p><small>Опубликовано: {{ post.posted }}</small></p>
+
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%; max-height: 250px; object-fit: cover; margin-bottom: 15px;">
+    {% endif %}
+
+    <p>{{ post.description }}</p>
+
+    <p>
+        <a href="{% url 'blogpost' post.id %}">Читать далее</a>
+    </p>
 </div>
-
-
-
-        {% for post in posts %}
-<div class="panel panel-default bober-post">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <a href="{% url 'blogpost' parametr=post.id %}">{{ post.title }}</a>
-        </h3>
-        <div class="bober-post-meta">{{ post.posted|date:"d.m.Y H:i" }}</div>
-    </div>
-    <div class="panel-body">
-        {% if post.image and post.image.url != '/media/temp.jpg' %}
-        <div class="bober-mini-cover">
-            <img class="img-responsive bober-mini-cover-img"
-                 src="{{ post.image.url }}"
-                 alt="{{ post.title }}">
-        </div>
-        {% endif %}
-        <p>{{ post.description|truncatechars:220 }}</p>
-        <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">Читать</a>
-    </div>
-</div>
-        {% empty %}
-<div class="alert alert-info">Пока нет постов — бобёр готовит веточки.</div>
-        {% endfor %}
-
-
-
+    {% endfor %}
+{% else %}
+<p>Новостей пока нет.</p>
+{% endif %}
 {% endblock %}

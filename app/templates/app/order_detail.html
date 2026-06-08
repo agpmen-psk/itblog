@@ -1,0 +1,42 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<h2>Заказ №{{ order.id }}</h2>
+
+<p><strong>Дата создания:</strong> {{ order.created_at }}</p>
+<p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+<p><strong>Комментарий:</strong> {{ order.comment|default:"—" }}</p>
+
+<h3>Состав заказа</h3>
+
+{% if order.items.all %}
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Товар</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 style="margin-top: 20px;">Итого: {{ order.total_cost }}</h3>
+{% else %}
+<p>В заказе нет позиций.</p>
+{% endif %}
+
+<p style="margin-top: 20px;">
+    <a href="{% url 'orders_list' %}">Вернуться к списку заказов</a>
+</p>
+{% endblock %}

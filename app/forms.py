@@ -1,49 +1,57 @@
-﻿"""
-Definition of forms.
-"""
+﻿from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 
-from django import forms
-from django.contrib.auth.forms import AuthenticationForm
-from django.utils.translation import gettext_lazy as _
-from django.db import models
-from.models import Comment, Blog
+from .models import Blog, Comment, Order
 
-class BootstrapAuthenticationForm(AuthenticationForm):
-    """Authentication form which uses boostrap CSS."""
-    username = forms.CharField(max_length=254,
-                               widget=forms.TextInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'User name'}))
-    password = forms.CharField(label=_("Password"),
-                               widget=forms.PasswordInput({
-                                   'class': 'form-control',
-                                   'placeholder':'Password'}))
 
-class CommentForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True, label="Email")
+
     class Meta:
-        model = Comment
-        fields = ('text',)
-        labels = {'text': "Комментарий"}
-        widgets = {
-            'text': forms.Textarea(attrs={
-                'class': 'form-control bober-textarea',
-                'rows': 6,
-                'placeholder': 'Что думаешь? (без флуда, но с фактами)',
-            }),
-        }
+        model = User
+        fields = ("username", "email", "password1", "password2")
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label="Логин")
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput
+    )
+
 
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ("title", "description", "image", "content")
+        fields = ("title", "description", "content", "image")
         labels = {
             "title": "Заголовок",
             "description": "Краткое содержание",
-            "image": "Картинка",
             "content": "Полное содержание",
-        }
-        widgets = {
-            "excerpt": forms.Textarea(attrs={"rows": 3}),
-            "content": forms.Textarea(attrs={"rows": 10}),
+            "image": "Изображение",
         }
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("text",)
+        labels = {
+            "text": "Комментарий",
+        }
+        widgets = {
+            "text": forms.Textarea(attrs={"rows": 4}),
+        }
+
+
+class OrderCreateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ("comment",)
+        labels = {
+            "comment": "Комментарий к заказу",
+        }
+        widgets = {
+            "comment": forms.Textarea(attrs={"rows": 4}),
+        }

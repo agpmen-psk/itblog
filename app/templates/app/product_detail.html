@@ -1,0 +1,73 @@
+﻿{% extends "app/layout.html" %}
+
+{% block title %}{{ product.name }} | Каталог{% endblock %}
+
+{% block content %}
+<nav class="breadcrumbs mb-3">
+    <a href="{% url 'home' %}">Главная</a>
+    <span>/</span>
+    <a href="{% url 'catalog' %}">Каталог</a>
+    <span>/</span>
+    <a href="{% url 'products_by_category' product.category.id %}">{{ product.category.name }}</a>
+    <span>/</span>
+    <span>{{ product.name }}</span>
+</nav>
+
+<section class="product-detail">
+    <div class="product-detail__media">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail__image">
+        {% else %}
+        <div class="empty-state">
+            <p>Изображение товара пока не добавлено.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="product-detail__info">
+        <span class="badge">{{ product.category.name }}</span>
+        <h1 class="page-title mt-2">{{ product.name }}</h1>
+
+        {% if product.short_description %}
+        <p class="lead">{{ product.short_description }}</p>
+        {% endif %}
+
+        <div class="price price-lg mb-3">{{ product.price }}</div>
+
+        {% if product.stock %}
+        <p class="status status-success">В наличии: {{ product.stock }} шт.</p>
+        {% else %}
+        <p class="status status-warning">Товар временно отсутствует.</p>
+        {% endif %}
+
+        <div class="actions mt-3">
+            {% if user.is_authenticated and product.stock %}
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn">Добавить в корзину</button>
+            </form>
+            {% elif user.is_authenticated %}
+            <button type="button" class="btn btn-secondary" disabled>Нет в наличии</button>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn">Войти для покупки</a>
+            {% endif %}
+
+            <a href="{% url 'catalog' %}" class="btn btn-secondary">Назад в каталог</a>
+        </div>
+    </div>
+</section>
+
+<section class="mt-4">
+    <h2 class="section-title">Описание</h2>
+
+    {% if product.description %}
+    <article class="card prose">
+        <p>{{ product.description }}</p>
+    </article>
+    {% else %}
+    <div class="empty-state">
+        <p>Подробное описание для этого товара пока не заполнено.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

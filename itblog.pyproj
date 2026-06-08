@@ -35,7 +35,7 @@
   <ItemGroup>
     <Compile Include="app\forms.py" />
     <Compile Include="app\models.py" />
-    <Compile Include="app\templates\app\admin.py" />
+    <Compile Include="app\admin.py" />
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
@@ -62,14 +62,20 @@
   <ItemGroup>
     <Content Include="app\templates\app\blog.html" />
     <Content Include="app\templates\app\blogpost.html" />
+    <Content Include="app\templates\app\cart.html" />
+    <Content Include="app\templates\app\catalog.html" />
+    <Content Include="app\templates\app\checkout.html" />
     <Content Include="app\templates\app\links.html" />
     <Content Include="app\templates\app\newpost.html" />
+    <Content Include="app\templates\app\orders_list.html" />
+    <Content Include="app\templates\app\order_detail.html" />
+    <Content Include="app\templates\app\product_detail.html" />
     <Content Include="app\templates\app\registration.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
     <Content Include="app\static\app\content\bootstrap.min.css" />
-    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\site.css" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />

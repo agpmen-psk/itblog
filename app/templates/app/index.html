@@ -1,76 +1,125 @@
 ﻿{% extends "app/layout.html" %}
+
+{% block title %}Главная | Интернет-магазин и блог{% endblock %}
+
 {% block content %}
+<section class="hero">
+    <div class="hero__content">
+        <span class="badge">Курсовой проект на Django</span>
+        <h2 class="hero__title">Интернет-магазин с новостным разделом</h2>
+        <p class="hero__text">
+            Проект объединяет каталог товаров, корзину, оформление заказов и новостной блог
+            в одном Django-приложении с авторизацией пользователей и административной панелью.
+        </p>
 
-<div class="jumbotron bober-hero">
-    <h1 class="bober-h1">ИТ‑Блог «БОБР»</h1>
-    <p class="lead">Короткие заметки про Django, сети и всё, что помогает жить инфраструктуре.</p>
-    <p>
-        <a class="btn btn-primary btn-lg" href="{% url 'blog' %}">Перейти в блог</a>
-        {% if user.is_superuser %}
-        <a class="btn btn-default btn-lg" href="{% url 'newpost' %}">Новый пост</a>
-        {% endif %}
-    </p>
-</div>
-
-<div class="row">
-    <div class="col-md-8">
-
-        <div class="page-header">
-            <h2>Последние записи</h2>
+        <div class="actions">
+            <a class="btn" href="{% url 'catalog' %}">Перейти в каталог</a>
+            <a class="btn btn-secondary" href="{% url 'blog' %}">Читать новости</a>
         </div>
+    </div>
 
-        {% for post in latest_posts %}
-        <div class="panel panel-default bober-post">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a href="{% url 'blogpost' parametr=post.id %}">{{ post.title }}</a>
-                </h3>
-                <div class="bober-post-meta">{{ post.posted|date:"d.m.Y H:i" }}</div>
+    <div class="hero__panel">
+        <h3>Что уже реализовано</h3>
+        <ul class="list-clean">
+            <li>Категории и товары</li>
+            <li>Корзина и оформление заказов</li>
+            <li>Регистрация и вход пользователей</li>
+            <li>Новости и комментарии</li>
+            <li>Управление через Django Admin</li>
+        </ul>
+    </div>
+</section>
+
+<section class="mb-4">
+    <h2 class="section-title">Категории товаров</h2>
+
+    {% if categories %}
+    <div class="grid grid-3">
+        {% for category in categories %}
+        <article class="card">
+            <span class="badge">Категория</span>
+            <h3 class="card__title mt-2">{{ category.name }}</h3>
+            <p class="muted mb-0">
+                {{ category.description|default:"Описание категории пока не добавлено." }}
+            </p>
+            <div class="actions">
+                <a class="btn btn-secondary" href="{% url 'products_by_category' category.id %}">
+                    Открыть
+                </a>
             </div>
-            <div class="panel-body">
-                {% if post.image and post.image.url != '/media/temp.jpg' %}
-                <div class="bober-mini-cover">
-                    <img class="img-responsive bober-mini-cover-img"
-                         src="{{ post.image.url }}"
-                         alt="{{ post.title }}">
-                </div>
-                {% endif %}
-                <p>{{ post.description|truncatechars:220 }}</p>
-                <a class="btn btn-primary btn-sm" href="{% url 'blogpost' parametr=post.id %}">Читать</a>
-            </div>
-        </div>
-        {% empty %}
-        <div class="alert alert-info">Пока нет постов — бобёр готовит веточки.</div>
+        </article>
         {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Категории пока не добавлены.</p>
+    </div>
+    {% endif %}
+</section>
 
+<section class="mb-4">
+    <h2 class="section-title">Популярные товары</h2>
+
+    {% if products %}
+    <div class="grid grid-3">
+        {% for product in products %}
+        <article class="card card--product">
+            {% if product.image %}
+            <img class="card__image" src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+
+            <div>
+                <div class="card__meta">{{ product.category.name }}</div>
+                <h3 class="card__title">{{ product.name }}</h3>
+            </div>
+
+            <p class="muted">{{ product.short_description }}</p>
+            <div class="price">{{ product.price }}</div>
+
+            <div class="actions">
+                <a class="btn" href="{% url 'product_detail' product.id %}">Подробнее</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Товары пока не добавлены.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section>
+    <h2 class="section-title">Последние новости</h2>
+
+    {% if latest_posts %}
+    <div class="grid grid-3">
+        {% for post in latest_posts %}
+        <article class="card card--post">
+            {% if post.image %}
+            <img class="card__image" src="{{ post.image.url }}" alt="{{ post.title }}">
+            {% endif %}
+
+            <div class="card__meta">Опубликовано: {{ post.posted }}</div>
+            <h3 class="card__title">{{ post.title }}</h3>
+            <p class="muted">{{ post.description }}</p>
+
+            <div class="actions">
+                <a class="btn btn-secondary" href="{% url 'blogpost' post.id %}">
+                    Читать далее
+                </a>
+            </div>
+        </article>
+        {% endfor %}
     </div>
 
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>О проекте</strong></div>
-            <div class="panel-body">
-                Блог для лабораторных и практики: посты + картинки + комментарии.
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Разделы</strong></div>
-            <div class="panel-body">
-                <ul class="list-unstyled" style="margin-bottom:0;">
-                    <li>— Django</li>
-                    <li>— Базы данных</li>
-                    <li>— Сети</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Контакты</strong></div>
-            <div class="panel-body">
-                Страница контактов: <a href="{% url 'contact' %}">открыть</a>
-            </div>
-        </div>
+    <div class="actions mt-3">
+        <a class="btn btn-secondary" href="{% url 'blog' %}">Все новости</a>
     </div>
-</div>
-
-{% endblock content %}
+    {% else %}
+    <div class="empty-state">
+        <p>Новостей пока нет.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

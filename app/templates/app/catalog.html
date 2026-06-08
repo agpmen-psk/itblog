@@ -1,0 +1,83 @@
+{% extends "app/layout.html" %}
+
+{% block title %}Каталог | Интернет-магазин и блог{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Каталог товаров</h2>
+<p class="muted mb-4">
+    Просматривайте товары по категориям, открывайте подробное описание и добавляйте позиции в корзину.
+</p>
+
+<div class="sidebar-layout">
+    <aside class="sidebar">
+        <h3 class="section-title">Категории</h3>
+
+        <ul>
+            <li>
+                <a href="{% url 'catalog' %}" class="{% if not selected_category %}is-active{% endif %}">
+                    Все категории
+                </a>
+            </li>
+            {% for category in categories %}
+            <li>
+                <a href="{% url 'products_by_category' category.id %}"
+                   class="{% if selected_category and selected_category.id == category.id %}is-active{% endif %}">
+                    {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section>
+        {% if selected_category %}
+        <div class="badge mb-2">Категория</div>
+        <h3 class="section-title">{{ selected_category.name }}</h3>
+        {% if selected_category.description %}
+        <p class="muted mb-4">{{ selected_category.description }}</p>
+        {% endif %}
+        {% else %}
+        <h3 class="section-title">Все товары</h3>
+        {% endif %}
+
+        {% if products %}
+        <div class="grid grid-2">
+            {% for product in products %}
+            <article class="card card--product">
+                {% if product.image %}
+                <img class="card__image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+
+                <div>
+                    <div class="card__meta">{{ product.category.name }}</div>
+                    <h4 class="card__title">{{ product.name }}</h4>
+                </div>
+
+                <p class="muted">{{ product.short_description }}</p>
+                <div class="price">{{ product.price }}</div>
+
+                <div class="actions">
+                    <a class="btn btn-secondary" href="{% url 'product_detail' product.id %}">
+                        Подробнее
+                    </a>
+
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit">В корзину</button>
+                    </form>
+                    {% else %}
+                    <a class="btn" href="{% url 'login' %}">Войти</a>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>Товаров в этой категории пока нет.</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

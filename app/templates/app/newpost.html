@@ -1,19 +1,15 @@
 ﻿{% extends "app/layout.html" %}
+
 {% block content %}
+<h2>Добавить новость</h2>
 
-<div class="jumbotron bober-hero">
-    <h1 class="bober-h1">Новый пост</h1>
-    <p class="lead">Добавим ещё одну веточку в плотину.</p>
-</div>
-
-<form method="POST" enctype="multipart/form-data" class="panel panel-default" style="border-radius:12px; overflow:hidden;">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <div class="panel-body">
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Опубликовать</button>
-        <a class="btn btn-default" href="{% url 'blog' %}">Назад</a>
-    </div>
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
 </form>
 
+<p style="margin-top: 20px;">
+    <a href="{% url 'blog' %}">Вернуться к списку новостей</a>
+</p>
 {% endblock %}

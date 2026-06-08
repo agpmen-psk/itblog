@@ -1,0 +1,43 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<h2>Корзина</h2>
+
+{% if order and order.items.all %}
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Товар</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.total_price }}</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.id %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 style="margin-top: 20px;">Итого: {{ order.total_cost }}</h3>
+
+<p style="margin-top: 20px;">
+    <a href="{% url 'checkout' %}">Оформить заказ</a>
+</p>
+{% else %}
+<p>Ваша корзина пуста.</p>
+<p>
+    <a href="{% url 'catalog' %}">Перейти в каталог</a>
+</p>
+{% endif %}
+{% endblock %}
