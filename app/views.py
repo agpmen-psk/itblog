@@ -3,9 +3,10 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, BlogForm, CommentForm, OrderCreateForm
 from .models import Blog, Comment, Category, Product, Order, OrderItem
+from django.contrib.auth.decorators import user_passes_test
 
 
 def index(request):
@@ -206,3 +207,71 @@ def order_detail(request, order_id):
         client=request.user
     )
     return render(request, "app/order_detail.html", {"order": order})
+
+@login_required
+def profile(request):
+    orders = Order.objects.filter(
+        client=request.user
+    ).exclude(
+        status=Order.StatusChoices.CART
+    ).order_by('-created_at')
+    
+    cart = Order.objects.filter(
+        client=request.user,
+        status=Order.StatusChoices.CART
+    ).first()
+    
+    cart_count = cart.items.count() if cart else 0
+    
+    return render(request, 'app/profile.html', {
+        'orders': orders,
+        'cart_count': cart_count,
+    })
+
+def links(request):
+    return render(request, 'app/links.html')
+
+def is_manager(user):
+    return user.groups.filter(name='Manager').exists() or user.is_staff
+
+@login_required
+@user_passes_test(is_manager)
+def manager_orders(request):
+    status_filter = request.GET.get('status', '')
+    orders = Order.objects.exclude(
+        status=Order.StatusChoices.CART
+    ).order_by('-created_at')
+
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+
+    return render(request, 'app/manager_orders.html', {
+        'orders': orders,
+        'status_filter': status_filter,
+        'status_choices': [
+            ('new', 'Новый'),
+            ('in_progress', 'В обработке'),
+            ('completed', 'Выполнен'),
+            ('cancelled', 'Отменён'),
+        ],
+    })
+
+@user_passes_test(is_manager)
+def manager_order_update(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        if status in Order.StatusChoices.values:
+            order.status = status
+            order.save()
+            messages.success(request, 'Статус заказа обновлён.')
+    return redirect('manager_orders')
+
+@login_required
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, client=request.user)
+    if order.status == Order.StatusChoices.NEW:
+        order.status = Order.StatusChoices.CANCELLED
+        order.save()
+        messages.success(request, 'Заказ отменён.')
+    return redirect('orders_list')

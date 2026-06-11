@@ -1,107 +1,81 @@
 ﻿{% extends "app/layout.html" %}
 {% load static %}
 
+{% block title %}О проекте{% endblock %}
+
 {% block content %}
+<div class="page-header-block">
+    <span class="badge">О нас</span>
+    <h1 class="page-title mt-2">О проекте</h1>
+    <p class="muted">Интернет-магазин с новостным разделом на Django.</p>
+</div>
 
-<div class="jumbotron bober-hero">
-    <div class="row">
-        <div class="col-sm-8">
-            <h1 class="bober-h1">О нас</h1>
-            <p class="lead">
-                “БОБР” — это ИТ‑блог про инфраструктуру: сети, VoIP, Linux и безопасность.
-                Пишем так, чтобы можно было повторить руками — с командами, схемами и разбором ошибок.
-            </p>
-
-            <p class="bober-meta">
-                Сегодня: {% now "d.m.Y H:i" %}
-            </p>
-
-            <p>
-                <a class="btn btn-primary btn-lg" href="{% url 'home' %}">Читать статьи</a>
-                <a class="btn btn-default btn-lg" href="{% url 'contact' %}">Задать вопрос</a>
-            </p>
+<div class="hero mb-4">
+    <div class="hero__content">
+        <h2 class="hero__title">IT-блог и магазин</h2>
+        <p class="hero__text">
+            Проект объединяет каталог товаров, корзину, оформление заказов
+            и новостной блог в одном Django-приложении с авторизацией
+            пользователей и административной панелью.
+        </p>
+        <div class="actions">
+            <a href="{% url 'catalog' %}" class="btn">Перейти в каталог</a>
+            <a href="{% url 'contact' %}" class="btn btn-secondary">Связаться</a>
         </div>
+    </div>
 
-        <div class="col-sm-4 hidden-xs">
-            <div class="bober-hero-card">
-                <div class="bober-logo-wrap">
-                    <img src="{% static 'app/content/beaver.png' %}" alt="БОБР" class="bober-hero-logo">
-                </div>
-                <div class="bober-hero-card-text">
-                    <div class="bober-mini-title">ИТ‑Блог “БОБР”</div>
-                    <div class="text-muted">Практика. Без воды. С логами.</div>
-                </div>
-            </div>
-        </div>
+    <div class="hero__panel">
+        <h3>Технологии</h3>
+        <ul class="list-clean">
+            <li>🐍 Python + Django</li>
+            <li>🗄️ SQLite / PostgreSQL</li>
+            <li>🎨 Собственный CSS без Bootstrap</li>
+            <li>👤 Авторизация и группы пользователей</li>
+            <li>🛒 Корзина и оформление заказов</li>
+            <li>📝 Блог с комментариями</li>
+            <li>⚙️ Django Admin</li>
+        </ul>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-default bober-panel">
-            <div class="panel-heading"><strong>Миссия</strong></div>
-            <div class="panel-body">
-                Делать инфраструктуру понятнее: объяснять сложные вещи простыми шагами, показывать типовые грабли и способы не наступать на них второй раз.
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default bober-panel">
-            <div class="panel-heading"><strong>О чём пишем</strong></div>
-            <div class="panel-body">
-                <ul class="bober-list">
-                    <li>Сети: VLAN, маршрутизация, диагностика.</li>
-                    <li>VoIP: SIP/RTP, PBX, качество голоса.</li>
-                    <li>Linux/Windows: сервисы, автоматизация, бэкапы.</li>
-                    <li>Безопасность: VPN, сегментация, базовое hardening.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default bober-panel">
-            <div class="panel-heading"><strong>Принципы</strong></div>
-            <div class="panel-body">
-                <ul class="bober-list">
-                    <li>Пишем только то, что проверяли вживую.</li>
-                    <li>Всегда даём “план отката” и точки контроля.</li>
-                    <li>Любим метрики: latency, loss, jitter, RPS — что уместно.</li>
-                    <li>Ценим читабельные конфиги и документацию.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<hr>
-
-<div class="row">
-    <div class="col-md-7">
-        <h2 class="bober-h2">Как выглядит типичный разбор</h2>
-        <ol class="bober-steps">
-            <li><strong>Симптом</strong>: что видит пользователь/мониторинг.</li>
-            <li><strong>Гипотезы</strong>: 3–5 вероятных причин.</li>
-            <li><strong>Проверки</strong>: команды/логи/трейсы, что именно смотреть.</li>
-            <li><strong>Фикс</strong>: минимально достаточное изменение.</li>
-            <li><strong>Профилактика</strong>: алерты, лимиты, документация.</li>
-        </ol>
-    </div>
-
-    <div class="col-md-5">
-        <div class="well bober-well">
-            <h3 class="bober-h3">Хочешь тему статьи?</h3>
-            <p class="text-muted">
-                Присылай вводные: “что было / что стало / что болит / какие ограничения”.
-                Из этого получится нормальный инженерный пост.
+<section class="mb-4">
+    <h2 class="section-title">Что умеет проект</h2>
+    <div class="grid grid-3">
+        <div class="card">
+            <h3 class="card__title">🛍️ Магазин</h3>
+            <p class="muted mb-0">
+                Каталог с категориями, карточки товаров, корзина,
+                оформление и история заказов для каждого покупателя.
             </p>
-            <p class="margin-top">
-                <a class="btn btn-success" href="{% url 'contact' %}">Написать</a>
-                <a class="btn btn-default" href="{% url 'links' %}">Полезные ресурсы</a>
+        </div>
+        <div class="card">
+            <h3 class="card__title">📰 Блог</h3>
+            <p class="muted mb-0">
+                Публикации с изображениями, система комментариев
+                для авторизованных пользователей.
+            </p>
+        </div>
+        <div class="card">
+            <h3 class="card__title">👤 Аккаунты</h3>
+            <p class="muted mb-0">
+                Регистрация, вход, личный кабинет с историей заказов,
+                разграничение прав через группы Django.
             </p>
         </div>
     </div>
-</div>
+</section>
 
+<section>
+    <div class="card">
+        <h2 class="section-title">Есть вопросы?</h2>
+        <p class="muted">
+            Если вас интересует проект или хотите связаться —
+            воспользуйтесь формой обратной связи.
+        </p>
+        <div class="actions">
+            <a href="{% url 'contact' %}" class="btn">Написать нам</a>
+            <a href="{% url 'links' %}" class="btn btn-secondary">Полезные ссылки</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

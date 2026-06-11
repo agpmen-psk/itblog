@@ -1,15 +1,56 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Новая запись{% endblock %}
+
 {% block content %}
-<h2>Добавить новость</h2>
+<div class="page-header-block">
+    <span class="badge">Редактор</span>
+    <h1 class="page-title mt-2">Новая запись</h1>
+    <p class="muted">Заполните форму и опубликуйте новый материал в блог.</p>
+</div>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-</form>
+<div class="auth-wrap" style="justify-content: flex-start;">
+    <div class="card" style="width: 100%; max-width: 720px;">
+        <form method="post" enctype="multipart/form-data" class="auth-form">
+            {% csrf_token %}
 
-<p style="margin-top: 20px;">
-    <a href="{% url 'blog' %}">Вернуться к списку новостей</a>
-</p>
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% if form.title.errors %}
+                <p class="form-error">{{ form.title.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {% if form.description.errors %}
+                <p class="form-error">{{ form.description.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                {% if form.content.errors %}
+                <p class="form-error">{{ form.content.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+                {% if form.image.errors %}
+                <p class="form-error">{{ form.image.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="actions mt-3">
+                <button type="submit" class="btn">Опубликовать</button>
+                <a href="{% url 'blog' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

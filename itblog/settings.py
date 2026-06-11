@@ -24,7 +24,8 @@ SECRET_KEY = 'cfc1bb4c-8f47-4250-ae73-e2aea8dd4a20'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOGIN_REDIRECT_URL = '/profile/'
+LOGOUT_REDIRECT_URL = '/'
 ALLOWED_HOSTS = []
 
 # Application references
@@ -37,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 ]
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'itblog.urls'

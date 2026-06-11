@@ -1,35 +1,57 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Блог{% endblock %}
+
 {% block content %}
-<h2>Новости</h2>
+<div class="page-header-block">
+    <span class="badge">Новости и статьи</span>
+    <h1 class="page-title mt-2">Блог</h1>
+    <p class="muted">Последние публикации, новости и полезные материалы.</p>
+</div>
 
 {% if user.is_staff %}
-<p>
-    <a href="{% url 'newpost' %}">Добавить новость</a>
-</p>
+<div class="mb-3">
+    <a href="{% url 'newpost' %}" class="btn">+ Новая запись</a>
+</div>
 {% endif %}
 
 {% if posts %}
+<div class="blog-list">
     {% for post in posts %}
-<div style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
-    <h3>
-        <a href="{% url 'blogpost' post.id %}">{{ post.title }}</a>
-    </h3>
+    <article class="card blog-card">
+        {% if post.image %}
+        <a href="{% url 'blogpost' post.id %}" class="blog-card__cover-link">
+            <img src="{{ post.image.url }}"
+                 alt="{{ post.title }}"
+                 class="blog-card__cover">
+        </a>
+        {% endif %}
 
-    <p><small>Опубликовано: {{ post.posted }}</small></p>
+        <div class="blog-card__body">
+            <div class="card__meta">{{ post.posted|date:"d.m.Y" }}</div>
+            <h2 class="blog-card__title">
+                <a href="{% url 'blogpost' post.id %}">{{ post.title }}</a>
+            </h2>
+            <p class="muted mb-0">{{ post.description }}</p>
 
-    {% if post.image %}
-    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%; max-height: 250px; object-fit: cover; margin-bottom: 15px;">
-    {% endif %}
-
-    <p>{{ post.description }}</p>
-
-    <p>
-        <a href="{% url 'blogpost' post.id %}">Читать далее</a>
-    </p>
-</div>
+            <div class="actions">
+                <a href="{% url 'blogpost' post.id %}" class="btn btn-secondary">
+                    Читать далее
+                </a>
+            </div>
+        </div>
+    </article>
     {% endfor %}
+</div>
+
 {% else %}
-<p>Новостей пока нет.</p>
+<div class="empty-state">
+    <p>Публикаций пока нет.</p>
+    {% if user.is_staff %}
+    <div class="actions mt-3">
+        <a href="{% url 'newpost' %}" class="btn">Создать первую запись</a>
+    </div>
+    {% endif %}
+</div>
 {% endif %}
 {% endblock %}

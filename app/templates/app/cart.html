@@ -1,43 +1,76 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Корзина{% endblock %}
+
 {% block content %}
-<h2>Корзина</h2>
+<div class="page-header-block">
+    <span class="badge">Покупки</span>
+    <h1 class="page-title mt-2">Корзина</h1>
+</div>
 
 {% if order and order.items.all %}
-<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th>Товар</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-            <th>Действие</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="cart-layout">
+    <section class="cart-list">
         {% for item in order.items.all %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.total_price }}</td>
-            <td>
-                <a href="{% url 'remove_from_cart' item.id %}">Удалить</a>
-            </td>
-        </tr>
+        <article class="card cart-item">
+            <div class="cart-item__media">
+                {% if item.product.image %}
+                <img src="{{ item.product.image.url }}"
+                     alt="{{ item.product.name }}"
+                     class="cart-item__image">
+                {% else %}
+                <div class="cart-item__placeholder">Нет фото</div>
+                {% endif %}
+            </div>
+
+            <div class="cart-item__content">
+                <div class="card__meta">{{ item.product.category.name }}</div>
+                <h3 class="card__title">{{ item.product.name }}</h3>
+                <p class="muted">{{ item.product.short_description }}</p>
+                <div class="cart-item__details">
+                    <span>Количество: <strong>{{ item.quantity }}</strong></span>
+                    <span>Цена за шт.: <strong>{{ item.price }} ₽</strong></span>
+                </div>
+            </div>
+
+            <div class="cart-item__aside">
+                <div class="price">{{ item.total_price }} ₽</div>
+                <div class="actions actions--stack">
+                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                </div>
+            </div>
+        </article>
         {% endfor %}
-    </tbody>
-</table>
+    </section>
 
-<h3 style="margin-top: 20px;">Итого: {{ order.total_cost }}</h3>
+    <aside class="card cart-summary">
+        <h2 class="section-title">Итого</h2>
 
-<p style="margin-top: 20px;">
-    <a href="{% url 'checkout' %}">Оформить заказ</a>
-</p>
+        <div class="summary-row">
+            <span>Позиций в корзине</span>
+            <strong>{{ order.items.count }}</strong>
+        </div>
+
+        <div class="summary-row summary-row--total">
+            <span>Сумма заказа</span>
+            <strong>{{ order.total_cost }} ₽</strong>
+        </div>
+
+        <div class="actions actions--stack mt-3">
+            <a href="{% url 'checkout' %}" class="btn">Оформить заказ</a>
+            <a href="{% url 'catalog' %}" class="btn btn-secondary">Продолжить покупки</a>
+        </div>
+    </aside>
+</div>
+
 {% else %}
-<p>Ваша корзина пуста.</p>
-<p>
-    <a href="{% url 'catalog' %}">Перейти в каталог</a>
-</p>
+<div class="empty-state">
+    <p>Корзина пуста — добавьте товары из каталога.</p>
+    <div class="actions mt-3">
+        <a href="{% url 'catalog' %}" class="btn">Перейти в каталог</a>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

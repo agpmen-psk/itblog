@@ -1,0 +1,94 @@
+﻿{% extends "app/layout.html" %}
+
+{% block title %}Управление заказами{% endblock %}
+
+{% block content %}
+<div class="page-header-block">
+    <span class="badge">Менеджер</span>
+    <h1 class="page-title mt-2">Управление заказами</h1>
+    <p class="muted">Все заказы клиентов. Меняйте статусы и отслеживайте выполнение.</p>
+</div>
+
+<div class="card mb-3">
+    <form method="get" class="manager-filter">
+        <label for="status-filter">Фильтр по статусу:</label>
+        <select name="status" id="status-filter">
+            <option value="">Все заказы</option>
+            {% for value, label in status_choices %}
+            <option value="{{ value }}"
+                    {% if status_filter == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Применить</button>
+        {% if status_filter %}
+        <a href="{% url 'manager_orders' %}" class="btn btn-secondary">Сбросить</a>
+        {% endif %}
+    </form>
+</div>
+
+{% if orders %}
+<div class="order-table-wrap card">
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Клиент</th>
+                <th>Дата</th>
+                <th>Товаров</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th>Изменить статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>
+                    <strong>{{ order.client.username }}</strong>
+                    {% if order.client.email %}
+                    <br><span class="muted" style="font-size:13px;">
+                        {{ order.client.email }}
+                    </span>
+                    {% endif %}
+                </td>
+                <td class="muted">{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                <td>{{ order.items.count }} шт.</td>
+                <td><strong>{{ order.total_cost }} ₽</strong></td>
+                <td>
+                    <span class="order-status order-status--{{ order.status }}">
+                        {{ order.get_status_display }}
+                    </span>
+                </td>
+                <td>
+                    <form method="post"
+                          action="{% url 'manager_order_update' order.id %}"
+                          class="manager-status-form">
+                        {% csrf_token %}
+                        <select name="status" class="manager-status-select">
+                            {% for value, label in status_choices %}
+                            <option value="{{ value }}"
+                                    {% if status_filter == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn" style="padding: 8px 14px; font-size: 14px;">
+                            Сохранить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="empty-state">
+    <p>Заказов пока нет{% if status_filter %} с выбранным статусом{% endif %}.</p>
+</div>
+{% endif %}
+{% endblock %}

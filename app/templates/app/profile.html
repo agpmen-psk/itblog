@@ -1,0 +1,93 @@
+﻿{% extends "app/layout.html" %}
+
+{% block title %}Профиль — {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="page-header-block">
+    <span class="badge">Личный кабинет</span>
+    <h1 class="page-title mt-2">Профиль</h1>
+</div>
+
+<div class="profile-layout">
+
+    <aside class="card profile-sidebar">
+        <div class="profile-avatar">
+            {{ user.username|slice:":1"|upper }}
+        </div>
+        <h2 class="profile-name">{{ user.username }}</h2>
+        {% if user.email %}
+        <p class="muted">{{ user.email }}</p>
+        {% endif %}
+
+        <div class="profile-stats">
+            <div class="profile-stat">
+                <span class="profile-stat__value">{{ orders.count }}</span>
+                <span class="profile-stat__label">Заказов</span>
+            </div>
+            <div class="profile-stat">
+                <span class="profile-stat__value">{{ cart_count }}</span>
+                <span class="profile-stat__label">В корзине</span>
+            </div>
+        </div>
+
+        <div class="actions actions--stack mt-3">
+            <a href="{% url 'cart' %}" class="btn">
+                Корзина
+                {% if cart_count %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+            <a href="{% url 'catalog' %}" class="btn btn-secondary">В каталог</a>
+        </div>
+    </aside>
+
+    <section class="profile-main">
+        <div class="card">
+            <h2 class="section-title">История заказов</h2>
+
+            {% if orders %}
+            <div class="order-table-wrap">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Сумма</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td><strong>#{{ order.id }}</strong></td>
+                            <td class="muted">{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>
+                                <span class="order-status order-status--{{ order.status }}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </td>
+                            <td><strong>{{ order.total_cost }} ₽</strong></td>
+                            <td>
+                                <a href="{% url 'order_detail' order.id %}"
+                                   class="btn btn-secondary">
+                                    Подробнее
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>Заказов пока нет.</p>
+                <div class="actions mt-3">
+                    <a href="{% url 'catalog' %}" class="btn">Перейти в каталог</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

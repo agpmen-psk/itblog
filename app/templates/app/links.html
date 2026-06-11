@@ -1,61 +1,49 @@
 ﻿{% extends "app/layout.html" %}
-{% load static %}
+
+{% block title %}Полезные ссылки{% endblock %}
+
 {% block content %}
-
-<div class="jumbotron bober-hero">
-    <h1 class="bober-h1">Полезные ресурсы</h1>
-    <p class="lead">
-        Подборка мест, где бобры добывают знания, а потом тащат в плотину (то есть в статьи).
-    </p>
-    <p class="text-muted small">
-        Открываем в новой вкладке, чтобы не потерять этот “берег”.
-    </p>
+<div class="page-header-block">
+    <span class="badge">Ресурсы</span>
+    <h1 class="page-title mt-2">Полезные ссылки</h1>
+    <p class="muted">Подборка полезных ресурсов по технологиям проекта.</p>
 </div>
 
-<div class="row bober-links">
-
-    <div class="col-xs-12 col-sm-6 col-md-4">
-        <a class="thumbnail bober-thumb"
-           href="https://habr.com/ru/feed/"
-           target="_blank" rel="noopener">
-            <div class="bober-thumb-img">
-                <img src="{% static 'app/content/habr.png' %}" alt="Хабр" class="img-responsive">
-            </div>
-            <div class="caption">
-                <h3>Хабр</h3>
-                <p class="text-muted">Новости и статьи по разработке и инфраструктуре.</p>
-            </div>
-        </a>
+<div class="grid grid-2">
+    <div class="card">
+        <h3 class="card__title mb-2">🐍 Django</h3>
+        <ul class="links-list">
+            <li><a href="https://docs.djangoproject.com/" target="_blank">Официальная документация</a></li>
+            <li><a href="https://djangopackages.org/" target="_blank">Django Packages</a></li>
+            <li><a href="https://realpython.com/tutorials/django/" target="_blank">Real Python — Django tutorials</a></li>
+        </ul>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
-        <a class="thumbnail bober-thumb"
-           href="https://interface31.ru/tech_it/index.php"
-           target="_blank" rel="noopener">
-            <div class="bober-thumb-img">
-                <img src="{% static 'app/content/interface31.png' %}" alt="Interface31" class="img-responsive">
-            </div>
-            <div class="caption">
-                <h3>Interface31</h3>
-                <p class="text-muted">Практические заметки по ИТ и администрированию.</p>
-            </div>
-        </a>
+    <div class="card">
+        <h3 class="card__title mb-2">🐙 Git & GitHub</h3>
+        <ul class="links-list">
+            <li><a href="https://git-scm.com/doc" target="_blank">Git документация</a></li>
+            <li><a href="https://docs.github.com/" target="_blank">GitHub Docs</a></li>
+            <li><a href="https://learngitbranching.js.org/" target="_blank">Learn Git Branching</a></li>
+        </ul>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
-        <a class="thumbnail bober-thumb"
-           href="https://serveradmin.ru/"
-           target="_blank" rel="noopener">
-            <div class="bober-thumb-img">
-                <img src="{% static 'app/content/serveradmin.png' %}" alt="ServerAdmin" class="img-responsive">
-            </div>
-            <div class="caption">
-                <h3>ServerAdmin</h3>
-                <p class="text-muted">Шпаргалки и интересные статьи для админов. И не только.</p>
-            </div>
-        </a>
+    <div class="card">
+        <h3 class="card__title mb-2">🎨 Frontend</h3>
+        <ul class="links-list">
+            <li><a href="https://developer.mozilla.org/ru/" target="_blank">MDN Web Docs</a></li>
+            <li><a href="https://css-tricks.com/" target="_blank">CSS-Tricks</a></li>
+            <li><a href="https://web.dev/" target="_blank">web.dev от Google</a></li>
+        </ul>
     </div>
 
+    <div class="card">
+        <h3 class="card__title mb-2">🛠️ Инструменты</h3>
+        <ul class="links-list">
+            <li><a href="https://www.jetbrains.com/pycharm/" target="_blank">PyCharm</a></li>
+            <li><a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a></li>
+            <li><a href="https://www.postman.com/" target="_blank">Postman</a></li>
+        </ul>
+    </div>
 </div>
-
 {% endblock %}

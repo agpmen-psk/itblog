@@ -1,43 +1,82 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Оформление заказа{% endblock %}
+
 {% block content %}
-<h2>Оформление заказа</h2>
+<div class="page-header-block">
+    <span class="badge">Шаг 2 из 2</span>
+    <h1 class="page-title mt-2">Оформление заказа</h1>
+</div>
 
 {% if order and order.items.all %}
-<h3>Состав заказа</h3>
+<div class="cart-layout">
+    <section>
+        <div class="card mb-3">
+            <h2 class="section-title">Состав заказа</h2>
+            <div class="order-table-wrap">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Цена</th>
+                            <th>Кол-во</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.price }} ₽</td>
+                            <td>{{ item.quantity }}</td>
+                            <td><strong>{{ item.total_price }} ₽</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-    <thead>
-        <tr>
-            <th>Товар</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in order.items.all %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.total_price }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <div class="card">
+            <h2 class="section-title">Комментарий к заказу</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.comment.label_tag }}
+                    {{ form.comment }}
+                    {% if form.comment.errors %}
+                    <p class="form-error">{{ form.comment.errors }}</p>
+                    {% endif %}
+                </div>
+                <div class="actions mt-3">
+                    <button type="submit" class="btn">Подтвердить заказ</button>
+                    <a href="{% url 'cart' %}" class="btn btn-secondary">Назад в корзину</a>
+                </div>
+            </form>
+        </div>
+    </section>
 
-<h3>Итого: {{ order.total_cost }}</h3>
+    <aside class="card cart-summary">
+        <h2 class="section-title">Итого</h2>
 
-<form method="post" style="margin-top: 20px;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Подтвердить заказ</button>
-</form>
+        <div class="summary-row">
+            <span>Позиций</span>
+            <strong>{{ order.items.count }}</strong>
+        </div>
+
+        <div class="summary-row summary-row--total">
+            <span>К оплате</span>
+            <strong>{{ order.total_cost }} ₽</strong>
+        </div>
+    </aside>
+</div>
+
 {% else %}
-<p>Корзина пуста, оформить заказ невозможно.</p>
-<p>
-    <a href="{% url 'catalog' %}">Перейти в каталог</a>
-</p>
+<div class="empty-state">
+    <p>Нет товаров для оформления заказа.</p>
+    <div class="actions mt-3">
+        <a href="{% url 'catalog' %}" class="btn">В каталог</a>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

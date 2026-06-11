@@ -1,16 +1,54 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Вход{% endblock %}
+
 {% block content %}
-<h2>Вход на сайт</h2>
+<div class="auth-wrap">
+    <div class="card auth-card">
+        <div class="auth-header">
+            <span class="badge">Личный кабинет</span>
+            <h1 class="page-title mt-2">Вход в аккаунт</h1>
+            <p class="muted">Введите логин и пароль для входа.</p>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Войти</button>
-</form>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
 
-<p style="margin-top: 20px;">
-    Нет аккаунта?
-    <a href="{% url 'registration' %}">Зарегистрироваться</a>
-</p>
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                <p class="form-error">{{ form.username.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% if form.password.errors %}
+                <p class="form-error">{{ form.password.errors }}</p>
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="form-error-block">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <div class="actions mt-3">
+                <button type="submit" class="btn">Войти</button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p class="muted">
+                Ещё нет аккаунта?
+                <a href="{% url 'registration' %}">Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,16 +1,68 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Регистрация{% endblock %}
+
 {% block content %}
-<h2>Регистрация</h2>
+<div class="auth-wrap">
+    <div class="card auth-card">
+        <div class="auth-header">
+            <span class="badge">Новый аккаунт</span>
+            <h1 class="page-title mt-2">Регистрация</h1>
+            <p class="muted">Создайте аккаунт, чтобы делать покупки и оставлять комментарии.</p>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
-</form>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
 
-<p style="margin-top: 20px;">
-    Уже есть аккаунт?
-    <a href="{% url 'login' %}">Войти</a>
-</p>
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                <p class="form-error">{{ form.username.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                <p class="form-error">{{ form.email.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                <p class="form-error">{{ form.password1.errors }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <p class="form-error">{{ form.password2.errors }}</p>
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="form-error-block">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <div class="actions mt-3">
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p class="muted">
+                Уже есть аккаунт?
+                <a href="{% url 'login' %}">Войти</a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

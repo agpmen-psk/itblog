@@ -1,94 +1,120 @@
 ﻿{% extends "app/layout.html" %}
-{% load static %}
+
+{% block title %}Контакты{% endblock %}
 
 {% block content %}
-
-<div class="jumbotron bober-hero">
-    <h1 class="bober-h1">Контакты</h1>
-    <p class="lead">
-        Если у тебя “всё упало” — спокойно. БОБР уже точит зубы о проблему и готов строить плотину из логов.
-    </p>
-    <p class="text-muted small">
-        Подсказка: чем больше фактов (время, что меняли, симптомы), тем меньше шаманства.
-    </p>
+<div class="page-header-block">
+    <span class="badge">Обратная связь</span>
+    <h1 class="page-title mt-2">Контакты</h1>
+    <p class="muted">Напишите нам — ответим в ближайшее время.</p>
 </div>
 
-<div class="row">
-    <div class="col-md-7">
-        <h2 class="bober-h2">Написать в штаб БОБРа</h2>
-
-        <div class="panel panel-default bober-panel">
-            <div class="panel-heading"><strong>Форма обращения</strong></div>
-            <div class="panel-body">
-
-                <form method="post" action="">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label for="id_name">Имя</label>
-                        <input id="id_name" name="name" type="text" class="form-control" placeholder="Как к тебе обращаться">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_email">Email</label>
-                        <input id="id_email" name="email" type="email" class="form-control" placeholder="куда отвечать (желательно не /dev/null)">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_topic">Тема</label>
-                        <select id="id_topic" name="topic" class="form-control">
-                            <option>Вопрос по статье</option>
-                            <option>Идея темы</option>
-                            <option>Нашёл ошибку (БОБР извинится)</option>
-                            <option>Помогите, горит прод</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_msg">Сообщение</label>
-                        <textarea id="id_msg" name="message" rows="7" class="form-control"
-                                  placeholder="Что произошло, когда, что делал, что ожидал увидеть. Логи приветствуются."></textarea>
-                        <p class="help-block">
-                            Мини-чеклист: время инцидента, окружение, шаги воспроизведения, вывод ping/traceroute, что менялось последним.
-                        </p>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Отправить бобру</button>
-                    <a class="btn btn-default" href="{% url 'home' %}">Вернуться к статьям</a>
-                </form>
-
+<div class="contact-layout">
+    <section class="card">
+        <h2 class="section-title">Форма обратной связи</h2>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">Ваше имя</label>
+                <input type="text" id="id_name" name="name" placeholder="Иван Иванов">
             </div>
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" id="id_email" name="email" placeholder="ivan@example.com">
+            </div>
+            <div class="form-group">
+                <label for="id_topic">Тема</label>
+                <select id="id_topic" name="topic">
+                    <option>Вопрос о заказе</option>
+                    <option>Вопрос о товаре</option>
+                    <option>Сотрудничество</option>
+                    <option>Техническая проблема</option>
+                    <option>Другое</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_message">Сообщение</label>
+                <textarea id="id_message" name="message"
+                          placeholder="Опишите ваш вопрос подробно..."></textarea>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn">Отправить</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+            </div>
+        </form>
+    </section>
+
+    <aside>
+        <div class="card mb-3">
+            <h3 class="section-title">Контактные данные</h3>
+            <ul class="contact-list">
+                <li>
+                    <span class="contact-list__label">Адрес</span>
+                    <span>г. Псков, ул. М.Горького, д. 1</span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Телефон</span>
+                    <span><a href="tel:+781121234567">+7 (8112) 122-45-67</a></span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Телефон 2</span>
+                    <span><a href="tel:+781127654321">+7 (8112) 765-43-21</a></span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Email</span>
+                    <span><a href="mailto:support@itshop.ru">support@itshop.ru</a></span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Режим работы</span>
+                    <span>Пн–Пт: 9:00 – 18:00</span>
+                </li>
+            </ul>
         </div>
-    </div>
 
-    <div class="col-md-5">
-        <h2 class="bober-h2">Быстрые каналы</h2>
-
-        <div class="well bober-well">
-            <p class="bober-kv"><strong>Email:</strong> support@bober.local</p>
-            <p class="bober-kv"><strong>Идеи тем:</strong> ideas@bober.local</p>
-            <p class="bober-kv"><strong>“Горит прод”:</strong> noc@bober.local</p>
-            <hr>
-            <p class="text-muted">
-                SLA по‑бобровски:
-                <br>— “Горит прод”: отвечаем быстро, если приложены логи.
-                <br>— “Просто спросить”: тоже отвечаем, но бобёр сначала допьёт чай и дочитает RFC.
-            </p>
-        </div>
-
-        <div class="panel panel-default bober-panel">
-            <div class="panel-heading"><strong>Что приложить</strong></div>
-            <div class="panel-body">
-                <ul class="bober-list">
-                    <li>Скрин/текст ошибки (не “оно не работает”).</li>
-                    <li>Время и часовой пояс.</li>
-                    <li>Что менялось последним (да, “ничего” тоже считается изменением).</li>
-                    <li>Пара строк из логов (без паролей и токенов).</li>
-                </ul>
+        <div class="card mb-3">
+            <h3 class="section-title">Как нас найти</h3>
+            <div class="map-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" width="32" height="32">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" />
+                </svg>
+                <p>г. Псков, ул. М.Горького, д. 1</p>
             </div>
         </div>
 
-    </div>
+        <div class="card developer-card">
+            <h3 class="section-title">О разработчике</h3>
+            <div class="developer-info">
+                <div class="developer-avatar">
+                    АС
+                </div>
+                <div>
+                    <strong>Артём Семёнов</strong>
+                    <p class="muted mb-0" style="font-size:14px;">
+                        Студент, разработчик проекта
+                    </p>
+                </div>
+            </div>
+            <ul class="contact-list mt-3">
+                <li>
+                    <span class="contact-list__label">Учебное заведение</span>
+                    <span>ПсковГУ, ПИШ</span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Email</span>
+                    <span><a href="mailto:semenov_as@interrao.ru">semenov_as@interrao.ru</a></span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Стек</span>
+                    <span>Python, Django, HTML/CSS</span>
+                </li>
+                <li>
+                    <span class="contact-list__label">Год разработки</span>
+                    <span>2026</span>
+                </li>
+            </ul>
+        </div>
+    </aside>
 </div>
-
 {% endblock %}

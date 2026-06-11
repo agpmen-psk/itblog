@@ -1,59 +1,100 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}{{ post.title }}{% endblock %}
+
 {% block content %}
-<article>
-    <h2>{{ post.title }}</h2>
-    <p><small>Опубликовано: {{ post.posted }}</small></p>
+<nav class="breadcrumbs mb-3">
+    <a href="{% url 'home' %}">Главная</a>
+    <span>/</span>
+    <a href="{% url 'blog' %}">Блог</a>
+    <span>/</span>
+    <span>{{ post.title }}</span>
+</nav>
+
+<article class="blog-post">
+    <header class="blog-post__header card mb-3">
+        <div class="card__meta">{{ post.posted|date:"d.m.Y H:i" }}</div>
+        <h1 class="page-title mt-1">{{ post.title }}</h1>
+
+        {% if post.description %}
+            <p class="lead mb-0">{{ post.description }}</p>
+        {% endif %}
+    </header>
 
     {% if post.image %}
-    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%; max-height: 400px; object-fit: cover; margin-bottom: 20px;">
+        <div class="blog-post__cover mb-3">
+            <img src="{{ post.image.url }}"
+                 alt="{{ post.title }}"
+                 class="blog-post__image">
+        </div>
     {% endif %}
 
-    <p><strong>{{ post.description }}</strong></p>
-    <p>{{ post.content }}</p>
+    <div class="card blog-post__body mb-3">
+        <div class="post-body">
+            {{ post.content|linebreaks }}
+        </div>
+    </div>
 </article>
 
-<hr>
-
-<section style="margin-top: 30px;">
-    <h3>Комментарии</h3>
+<section class="mb-3">
+    <h2 class="section-title">
+        Комментарии
+        {% if comments %}
+            <span class="badge">{{ comments.count }}</span>
+        {% endif %}
+    </h2>
 
     {% if comments %}
-    {% for comment in comments %}
-    <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 6px;">
-        <p>{{ comment.text }}</p>
-        <p>
-            <small>
-                Автор: {{ comment.author.username }} |
-                Дата: {{ comment.date }}
-            </small>
-        </p>
-    </div>
-    {% endfor %}
+        <div class="comments-list">
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment__head">
+                        <div class="comment__avatar">
+                            {{ comment.author.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <strong>{{ comment.author.username }}</strong>
+                            <span class="muted" style="font-size:13px; margin-left:8px;">
+                                {{ comment.date|date:"d.m.Y H:i" }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="comment__body">
+                        {{ comment.text|linebreaks }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-    <p>Комментариев пока нет.</p>
+        <div class="empty-state mb-3">
+            <p>Комментариев пока нет. Будьте первым!</p>
+        </div>
     {% endif %}
 </section>
 
-<hr>
-
-<section style="margin-top: 30px;">
-    <h3>Добавить комментарий</h3>
+<section class="card">
+    <h2 class="section-title">Оставить комментарий</h2>
 
     {% if user.is_authenticated %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Отправить</button>
-    </form>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.text.label_tag }}
+                {{ form.text }}
+                {% if form.text.errors %}
+                    <p class="form-error">{{ form.text.errors }}</p>
+                {% endif %}
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn">Отправить</button>
+            </div>
+        </form>
     {% else %}
-    <p>
-        <a href="{% url 'login' %}">Войдите</a>, чтобы оставить комментарий.
-    </p>
+        <div class="empty-state">
+            <p>Чтобы оставить комментарий, нужно
+                <a href="{% url 'login' %}">войти в аккаунт</a>.
+            </p>
+        </div>
     {% endif %}
 </section>
-
-<p style="margin-top: 30px;">
-    <a href="{% url 'blog' %}">Вернуться к списку новостей</a>
-</p>
 {% endblock %}

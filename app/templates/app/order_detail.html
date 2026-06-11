@@ -1,42 +1,93 @@
 ﻿{% extends "app/layout.html" %}
 
+{% block title %}Заказ #{{ order.id }}{% endblock %}
+
 {% block content %}
-<h2>Заказ №{{ order.id }}</h2>
+<nav class="breadcrumbs mb-3">
+    <a href="{% url 'orders_list' %}">Мои заказы</a>
+    <span>/</span>
+    <span>Заказ #{{ order.id }}</span>
+</nav>
 
-<p><strong>Дата создания:</strong> {{ order.created_at }}</p>
-<p><strong>Статус:</strong> {{ order.get_status_display }}</p>
-<p><strong>Комментарий:</strong> {{ order.comment|default:"—" }}</p>
+<div class="page-header-block">
+    <h1 class="page-title">Заказ <span class="muted">#{{ order.id }}</span></h1>
+</div>
 
-<h3>Состав заказа</h3>
+<div class="cart-layout">
+    <section>
+        <div class="card mb-3">
+            <h2 class="section-title">Состав заказа</h2>
 
-{% if order.items.all %}
-<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th>Товар</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in order.items.all %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.total_price }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            {% if order.items.all %}
+            <div class="order-table-wrap">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Цена</th>
+                            <th>Кол-во</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'product_detail' item.product.id %}">
+                                    {{ item.product.name }}
+                                </a>
+                            </td>
+                            <td>{{ item.price }} ₽</td>
+                            <td>{{ item.quantity }}</td>
+                            <td><strong>{{ item.total_price }} ₽</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>Позиции заказа не найдены.</p>
+            </div>
+            {% endif %}
+        </div>
 
-<h3 style="margin-top: 20px;">Итого: {{ order.total_cost }}</h3>
-{% else %}
-<p>В заказе нет позиций.</p>
-{% endif %}
+        {% if order.comment %}
+        <div class="card">
+            <h2 class="section-title">Комментарий</h2>
+            <p class="muted">{{ order.comment }}</p>
+        </div>
+        {% endif %}
+    </section>
 
-<p style="margin-top: 20px;">
-    <a href="{% url 'orders_list' %}">Вернуться к списку заказов</a>
-</p>
+    <aside class="card cart-summary">
+        <h2 class="section-title">Информация</h2>
+
+        <div class="summary-row">
+            <span>Номер заказа</span>
+            <strong>#{{ order.id }}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Дата</span>
+            <strong>{{ order.created_at|date:"d.m.Y H:i" }}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Статус</span>
+            <span class="order-status order-status--{{ order.status }}">
+                {{ order.get_status_display }}
+            </span>
+        </div>
+
+        <div class="summary-row summary-row--total">
+            <span>Итого</span>
+            <strong>{{ order.total_cost }} ₽</strong>
+        </div>
+
+        <div class="actions actions--stack mt-3">
+            <a href="{% url 'orders_list' %}" class="btn btn-secondary">К списку заказов</a>
+        </div>
+    </aside>
+</div>
 {% endblock %}

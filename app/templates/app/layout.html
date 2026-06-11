@@ -10,9 +10,18 @@
 <body>
     <header class="site-header">
         <div class="site-header__inner">
-            <h1 class="site-brand">
-                <a href="{% url 'home' %}">Интернет-магазин и новостной блог</a>
-            </h1>
+            <div class="site-brand">
+                <a href="{% url 'home' %}" class="site-brand__link">
+                    <svg class="site-logo" viewBox="0 0 44 44" fill="none"
+                         xmlns="http://www.w3.org/2000/svg" aria-label="IT-Shop логотип">
+                        <rect width="44" height="44" rx="12" fill="#2563eb" />
+                        <rect x="8" y="13" width="4" height="18" rx="2" fill="white" />
+                        <rect x="16" y="8" width="4" height="28" rx="2" fill="white" />
+                        <path d="M24 22 L36 13 L36 31 Z" fill="rgba(255,255,255,0.85)" />
+                    </svg>
+                    <span class="site-brand__name">IT-Shop</span>
+                </a>
+            </div>
 
             <nav class="site-nav">
                 <a href="{% url 'home' %}">Главная</a>
@@ -20,19 +29,24 @@
                 <a href="{% url 'contact' %}">Контакты</a>
                 <a href="{% url 'blog' %}">Новости</a>
                 <a href="{% url 'catalog' %}">Каталог</a>
-
                 {% if user.is_authenticated %}
                 <a href="{% url 'cart' %}">Корзина</a>
-                <a href="{% url 'orders_list' %}">Мои заказы</a>
+                {% if user.groups.all.0.name == 'Manager' or user.is_staff %}
+                <a href="{% url 'manager_orders' %}">Заказы клиентов</a>
+                {% endif %}
                 {% endif %}
             </nav>
 
             <div class="site-auth">
                 {% if user.is_authenticated %}
-                <span class="site-auth__user">
-                    Вы вошли как <strong>{{ user.username }}</strong>
-                </span>
-                <a href="{% url 'logout' %}">Выйти</a>
+                <a href="{% url 'profile' %}" class="site-auth__user">
+                    <strong>{{ user.username }}</strong>
+                </a>
+                <a href="{% url 'orders_list' %}">Мои заказы</a>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-logout-btn">Выйти</button>
+                </form>
                 {% else %}
                 <a href="{% url 'login' %}">Войти</a>
                 <a href="{% url 'registration' %}">Регистрация</a>
